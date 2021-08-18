@@ -1,12 +1,28 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
-const MealDetails = () => {
+import {MEALS} from '../data/dummy-data';
+import {HeaderButton} from '../components';
+
+const MealDetails = ({navigation}) => {
+  const mealId = navigation.getParam('mealId');
+  const selectedMeal = MEALS.find(meal => meal.id === mealId);
+
   return (
     <View style={styles.screen}>
-      <Text>The MealDetails Screen!</Text>
+      <Text>{selectedMeal.title}</Text>
     </View>
   );
+};
+
+MealDetails.navigationOptions = navigationData => {
+  const mealId = navigationData.navigation.getParam('mealId');
+  const selectedMeal = MEALS.find(meal => meal.id === mealId);
+
+  return {
+    headerTitle: selectedMeal.title,
+    headerRight: () => <HeaderButton />,
+  };
 };
 
 const styles = StyleSheet.create({

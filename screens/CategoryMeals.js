@@ -21,7 +21,12 @@ const CategoryMeals = ({navigation}) => {
         duration={item.duration}
         complexity={item.complexity}
         affordability={item.affordability}
-        selectMeal={() => {}}
+        selectMeal={() => {
+          navigation.navigate({
+            routeName: 'MealDetails',
+            params: {mealId: item.id},
+          });
+        }}
       />
     );
   };
