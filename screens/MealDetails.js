@@ -21,7 +21,7 @@ MealDetails.navigationOptions = navigationData => {
 
   return {
     headerTitle: selectedMeal.title,
-    headerRight: () => <HeaderButton />,
+    headerRight: () => <HeaderButton iconName="star" />,
   };
 };
 

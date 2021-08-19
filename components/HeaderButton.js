@@ -5,11 +5,14 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Colors from '../common/colors';
 
 const HeaderButton = props => {
+  const name = props.iconName;
+  const handlePress = props.pressAction;
+
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={() => handlePress()}>
       <View style={styles.container}>
         <Icon
-          name="star"
+          name={name}
           size={22}
           color={Platform.OS === 'android' ? 'white' : Colors.primaryColor}
         />
@@ -20,7 +23,7 @@ const HeaderButton = props => {
 
 const styles = StyleSheet.create({
   container: {
-    marginRight: 16,
+    marginHorizontal: 16,
   },
 });
 

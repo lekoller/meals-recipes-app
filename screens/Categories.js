@@ -1,8 +1,8 @@
 import React from 'react';
-import {View, Text, FlatList, TouchableOpacity, StyleSheet} from 'react-native';
+import {FlatList, StyleSheet} from 'react-native';
 
 import {CATEGORIES} from '../data/dummy-data';
-import {CategoryGridTile} from '../components';
+import {CategoryGridTile, HeaderButton} from '../components';
 
 const Categories = ({navigation}) => {
   const renderGridItem = itemData => {
@@ -16,9 +16,15 @@ const Categories = ({navigation}) => {
   );
 };
 
-Categories.navigationOptions = {
+Categories.navigationOptions = navData => ({
   headerTitle: 'Meal Categories',
-};
+  headerLeft: () => (
+    <HeaderButton
+      iconName="bars"
+      pressAction={() => navData.navigation.toggleDrawer()}
+    />
+  ),
+});
 
 const styles = StyleSheet.create({
   screen: {
