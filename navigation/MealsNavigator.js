@@ -14,6 +14,7 @@ import {
 } from '../screens';
 import {headerDefaultConfig} from '../common/styles';
 import Colors from '../common/colors';
+import styles from '../common/styles';
 
 const MealsNavigator = createStackNavigator(
   {
@@ -69,13 +70,32 @@ const MealsFavTabNavigator = createBottomTabNavigator(
   },
 );
 
-const FiltersNavigator = createStackNavigator({
-  Filters: Filters,
-});
+const FiltersNavigator = createStackNavigator(
+  {
+    Filters: Filters,
+  },
+  {
+    defaultNavigationOptions: headerDefaultConfig,
+  },
+);
 
-const MainNavigator = createDrawerNavigator({
-  TabNavigator: MealsFavTabNavigator,
-  Filters: FiltersNavigator,
-});
+const MainNavigator = createDrawerNavigator(
+  {
+    TabNavigator: {
+      screen: MealsFavTabNavigator,
+      navigationOptions: {drawerLabel: 'Meals'},
+    },
+    Filters: FiltersNavigator,
+  },
+  {
+    contentOptions: {
+      activeTintColor: Colors.secondaryColor,
+      labelStyle: {
+        ...styles.text,
+        fontSize: 16,
+      },
+    },
+  },
+);
 
 export default createAppContainer(MainNavigator);
