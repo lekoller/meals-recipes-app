@@ -6,16 +6,26 @@ import Colors from '../common/colors';
 
 const HeaderButton = props => {
   const name = props.iconName;
-  const handlePress = props.pressAction;
+  const handlePress = props.onPress;
+  const defaultColor =
+    Platform.OS === 'android' ? 'white' : Colors.primaryColor;
+  let color = props.color ? props.color : defaultColor;
+
+  switch (color) {
+    case 'primary':
+      color = Colors.primaryColor;
+      break;
+    case 'secondary':
+      color = Colors.secondaryColor;
+      break;
+    default:
+      break;
+  }
 
   return (
     <TouchableOpacity onPress={() => handlePress()}>
       <View style={styles.container}>
-        <Icon
-          name={name}
-          size={22}
-          color={Platform.OS === 'android' ? 'white' : Colors.primaryColor}
-        />
+        <Icon name={name} size={22} color={color} />
       </View>
     </TouchableOpacity>
   );

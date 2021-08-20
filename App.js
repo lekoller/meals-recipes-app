@@ -1,16 +1,26 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
 import {enableScreens} from 'react-native-screens';
+import {createStore, combineReducers} from 'redux';
+import {Provider} from 'react-redux';
 import 'react-native-gesture-handler';
 
 import MealsNavigator from './navigation/MealsNavigator';
+import mealsReducer from './store/reducers/meals';
 
 enableScreens();
 
-const App = () => {
-  return <MealsNavigator />;
-};
+const rootReducer = combineReducers({
+  meals: mealsReducer,
+});
 
-const styles = StyleSheet.create({});
+const store = createStore(rootReducer);
+
+const App = () => {
+  return (
+    <Provider store={store}>
+      <MealsNavigator />
+    </Provider>
+  );
+};
 
 export default App;

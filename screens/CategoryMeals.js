@@ -1,12 +1,15 @@
 import React from 'react';
-import {View, Text, StyleSheet, FlatList} from 'react-native';
+import {StyleSheet} from 'react-native';
+import {useSelector} from 'react-redux';
 
-import {CATEGORIES, MEALS} from '../data/dummy-data';
+import {CATEGORIES} from '../data/dummy-data';
 import {MealList} from '../components';
 
 const CategoryMeals = ({navigation}) => {
   const categoryId = navigation.getParam('categoryId', 'undefined');
-  const displayMeals = MEALS.filter(
+  const availableMeals = useSelector(({meals}) => meals.filtered);
+
+  const displayMeals = availableMeals.filter(
     meal => meal.categoryIds.indexOf(categoryId) >= 0,
   );
 

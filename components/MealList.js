@@ -19,7 +19,10 @@ const MealList = props => {
         selectMeal={() => {
           navigate({
             routeName: 'MealDetails',
-            params: {mealId: item.id},
+            params: {
+              mealId: item.id,
+              mealTitle: item.title,
+            },
           });
         }}
       />

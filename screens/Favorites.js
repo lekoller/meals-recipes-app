@@ -1,13 +1,23 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View, Text} from 'react-native';
+import {useSelector} from 'react-redux';
 
-import {MEALS} from '../data/dummy-data';
 import {MealList, HeaderButton} from '../components';
 
 const Favorites = ({navigation}) => {
-  const favMeals = MEALS.filter(meal => meal.id === 'm1' || meal.id === 'm2'); // dummy logic
+  const favoriteMeals = useSelector(({meals}) => meals.favorites);
 
-  return <MealList displayMeals={favMeals} navigate={navigation.navigate} />;
+  if (favoriteMeals.length === 0 || !favoriteMeals) {
+    return (
+      <View style={styles.container}>
+        <Text>No Favorite meals found. Start adding some!</Text>
+      </View>
+    );
+  }
+
+  return (
+    <MealList displayMeals={favoriteMeals} navigate={navigation.navigate} />
+  );
 };
 
 Favorites.navigationOptions = navData => ({
@@ -15,11 +25,17 @@ Favorites.navigationOptions = navData => ({
   headerLeft: () => (
     <HeaderButton
       iconName="bars"
-      pressAction={() => navData.navigation.toggleDrawer()}
+      onPress={() => navData.navigation.toggleDrawer()}
     />
   ),
 });
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 export default Favorites;

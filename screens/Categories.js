@@ -21,7 +21,7 @@ Categories.navigationOptions = navData => ({
   headerLeft: () => (
     <HeaderButton
       iconName="bars"
-      pressAction={() => navData.navigation.toggleDrawer()}
+      onPress={() => navData.navigation.toggleDrawer()}
     />
   ),
 });

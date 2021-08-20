@@ -1,14 +1,35 @@
-import React from 'react';
+import React, {useEffect, useCallback, useState} from 'react';
 import {View, Text, ScrollView, Image, StyleSheet} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
 
-import {MEALS} from '../data/dummy-data';
 import {HeaderButton} from '../components';
+import {toggleFavorite} from '../store/actions/meals';
 
 const MealDetails = ({navigation}) => {
+  const availableMeals = useSelector(({meals}) => meals.general);
+  const favoriteMeals = useSelector(({meals}) => meals.favorites);
   const mealId = navigation.getParam('mealId');
-  const selectedMeal = MEALS.find(meal => meal.id === mealId);
+
+  const selectedMeal = availableMeals.find(meal => meal.id === mealId);
+  const isSelectedMealFavorite = favoriteMeals.includes(selectedMeal);
+  const [isFavorite, setIsFavorite] = useState(isSelectedMealFavorite);
+
   const {duration, complexity, affordability, imageUrl, ingredients, steps} =
     selectedMeal;
+
+  const dispatch = useDispatch();
+
+  const toggleFavoriteHandler = useCallback(() => {
+    dispatch(toggleFavorite(mealId));
+    setIsFavorite(!isFavorite);
+  }, [dispatch, mealId]);
+
+  useEffect(() => {
+    navigation.setParams({
+      toggleFavorite: toggleFavoriteHandler,
+      isFavorite: isFavorite,
+    });
+  }, [toggleFavoriteHandler, isFavorite]);
 
   const ListItem = props => (
     <View style={styles.listItem}>
@@ -36,13 +57,20 @@ const MealDetails = ({navigation}) => {
   );
 };
 
-MealDetails.navigationOptions = navigationData => {
-  const mealId = navigationData.navigation.getParam('mealId');
-  const selectedMeal = MEALS.find(meal => meal.id === mealId);
+MealDetails.navigationOptions = ({navigation}) => {
+  const mealTitle = navigation.getParam('mealTitle');
+  const toggleFavorite = navigation.getParam('toggleFavorite');
+  const isFavorite = navigation.getParam('isFavorite');
 
   return {
-    headerTitle: selectedMeal.title,
-    headerRight: () => <HeaderButton iconName="star" />,
+    headerTitle: mealTitle,
+    headerRight: () => (
+      <HeaderButton
+        iconName="star"
+        onPress={toggleFavorite}
+        color={isFavorite ? 'secondary' : undefined}
+      />
+    ),
   };
 };
 
