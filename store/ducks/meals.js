@@ -1,9 +1,11 @@
+import {createActions, createReducer} from 'reduxsauce';
+
 import {MEALS} from '../../data/dummy-data';
 
-export const Types = {
-  TOGGLE_FAVORITE: 'TOGGLE_FAVORITE',
-  SET_FILTERS: 'SET_FILTERS',
-};
+export const {Types, Creators} = createActions({
+  toggleFavorite: ['id'],
+  setFilters: ['filtersSetting'],
+});
 
 const initialState = {
   general: MEALS,
@@ -11,47 +13,38 @@ const initialState = {
   favorites: [],
 };
 
-export const mealsReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case Types.TOGGLE_FAVORITE:
-      const existingIndex = state.favorites.findIndex(
-        meal => meal.id === action.payload.mealId,
-      );
+const toggleFavorite = (state = initialState, action) => {
+  const existingIndex = state.favorites.findIndex(
+    meal => meal.id === action.id,
+  );
 
-      if (existingIndex >= 0) {
-        const updatedFavorites = [...state.favorites];
-        updatedFavorites.splice(existingIndex, 1);
+  if (existingIndex >= 0) {
+    const updatedFavorites = [...state.favorites];
+    updatedFavorites.splice(existingIndex, 1);
 
-        return {...state, favorites: updatedFavorites};
-      } else {
-        const meal = state.general.find(
-          meal => meal.id === action.payload.mealId,
-        );
+    return {...state, favorites: updatedFavorites};
+  } else {
+    const meal = state.general.find(meal => meal.id === action.id);
 
-        return {...state, favorites: state.favorites.concat(meal)};
-      }
-    case Types.SET_FILTERS:
-      const appliedFilters = action.payload.filters;
-      const filteredMeals = state.general.filter(meal => {
-        if (appliedFilters.glutenFree && !meal.isGlutenFree) return false;
-        if (appliedFilters.lactoseFree && !meal.isLactoseFree) return false;
-        if (appliedFilters.vegetarian && !meal.isVegetarian) return false;
-        if (appliedFilters.vegan && !meal.isVegan) return false;
-
-        return true;
-      });
-
-      return {...state, filtered: filteredMeals};
-
-    default:
-      return state;
+    return {...state, favorites: state.favorites.concat(meal)};
   }
 };
 
-export const Creators = {
-  toggleFavorite: id => ({type: Types.TOGGLE_FAVORITE, payload: {mealId: id}}),
+const setFilters = (state = initialState, action) => {
+  const appliedFilters = action.filtersSetting;
+  const filteredMeals = state.general.filter(meal => {
+    if (appliedFilters.glutenFree && !meal.isGlutenFree) return false;
+    if (appliedFilters.lactoseFree && !meal.isLactoseFree) return false;
+    if (appliedFilters.vegetarian && !meal.isVegetarian) return false;
+    if (appliedFilters.vegan && !meal.isVegan) return false;
 
-  setFilters: filtersSetting => {
-    return {type: Types.SET_FILTERS, payload: {filters: filtersSetting}};
-  },
+    return true;
+  });
+
+  return {...state, filtered: filteredMeals};
 };
+
+export const mealsReducer = createReducer(initialState, {
+  [Types.TOGGLE_FAVORITE]: toggleFavorite,
+  [Types.SET_FILTERS]: setFilters,
+});

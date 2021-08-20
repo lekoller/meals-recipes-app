@@ -14,12 +14,6 @@ const MealItem = props => {
   const complexity = props.complexity.toUpperCase();
   const imageUrl = props.imageUrl;
   const duration = props.duration + ' min';
-  const ingredients = props.ingredients;
-  const steps = props.steps;
-  const isGlutenFree = props.isGlutenFree;
-  const isVegan = props.isVegan;
-  const isVegetarian = props.isVegetarian;
-  const isLactoseFree = props.isLactoseFree;
 
   return (
     <View style={styles.mealItem}>
