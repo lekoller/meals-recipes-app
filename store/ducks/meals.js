@@ -1,5 +1,9 @@
 import {MEALS} from '../../data/dummy-data';
-import {SET_FILTERS, TOGGLE_FAVORITE} from '../actions/meals';
+
+export const Types = {
+  TOGGLE_FAVORITE: 'TOGGLE_FAVORITE',
+  SET_FILTERS: 'SET_FILTERS',
+};
 
 const initialState = {
   general: MEALS,
@@ -7,11 +11,11 @@ const initialState = {
   favorites: [],
 };
 
-const mealsReducer = (state = initialState, action) => {
+export const mealsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case TOGGLE_FAVORITE:
+    case Types.TOGGLE_FAVORITE:
       const existingIndex = state.favorites.findIndex(
-        meal => meal.id === action.payload,
+        meal => meal.id === action.payload.mealId,
       );
 
       if (existingIndex >= 0) {
@@ -20,12 +24,14 @@ const mealsReducer = (state = initialState, action) => {
 
         return {...state, favorites: updatedFavorites};
       } else {
-        const meal = state.general.find(meal => meal.id === action.payload);
+        const meal = state.general.find(
+          meal => meal.id === action.payload.mealId,
+        );
 
         return {...state, favorites: state.favorites.concat(meal)};
       }
-    case SET_FILTERS:
-      const appliedFilters = action.payload;
+    case Types.SET_FILTERS:
+      const appliedFilters = action.payload.filters;
       const filteredMeals = state.general.filter(meal => {
         if (appliedFilters.glutenFree && !meal.isGlutenFree) return false;
         if (appliedFilters.lactoseFree && !meal.isLactoseFree) return false;
@@ -42,4 +48,10 @@ const mealsReducer = (state = initialState, action) => {
   }
 };
 
-export default mealsReducer;
+export const Creators = {
+  toggleFavorite: id => ({type: Types.TOGGLE_FAVORITE, payload: {mealId: id}}),
+
+  setFilters: filtersSetting => {
+    return {type: Types.SET_FILTERS, payload: {filters: filtersSetting}};
+  },
+};

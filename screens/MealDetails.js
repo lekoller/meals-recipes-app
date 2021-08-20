@@ -3,9 +3,10 @@ import {View, Text, ScrollView, Image, StyleSheet} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 
 import {HeaderButton} from '../components';
-import {toggleFavorite} from '../store/actions/meals';
+import {Creators} from '../store/ducks/meals';
 
 const MealDetails = ({navigation}) => {
+  const toggleFavorite = Creators.toggleFavorite;
   const availableMeals = useSelector(({meals}) => meals.general);
   const favoriteMeals = useSelector(({meals}) => meals.favorites);
   const mealId = navigation.getParam('mealId');

@@ -4,9 +4,10 @@ import {useDispatch} from 'react-redux';
 
 import {HeaderButton} from '../components';
 import Colors from '../common/colors';
-import {setFilters} from '../store/actions/meals';
+import {Creators} from '../store/ducks/meals';
 
 const Filters = ({navigation}) => {
+  const setFilters = Creators.setFilters;
   const [isGlutenFree, setIsGlutenFree] = useState(false);
   const [isLactoseFree, setIsLactoseFree] = useState(false);
   const [isVegan, setIsVegan] = useState(false);
