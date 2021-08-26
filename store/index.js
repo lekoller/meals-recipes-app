@@ -1,6 +1,12 @@
-import {createStore} from 'redux';
-import reducers from './ducks';
+import {createStore, applyMiddleware} from 'redux';
+import createSagaMiddleware from 'redux-saga';
 
-const store = createStore(reducers);
+import reducers from './ducks';
+import {watchLoadMealsData} from './sagas/meals';
+
+const sagaMddlwr = createSagaMiddleware();
+const store = createStore(reducers, applyMiddleware(sagaMddlwr));
+
+sagaMddlwr.run(watchLoadMealsData);
 
 export default store;
