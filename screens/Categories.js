@@ -1,10 +1,18 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {FlatList, StyleSheet} from 'react-native';
+import {useDispatch} from 'react-redux';
 
 import {CATEGORIES} from '../data/dummy-data';
 import {CategoryGridTile, HeaderButton} from '../components';
+import {MealsActions} from '../store/ducks';
 
 const Categories = ({navigation}) => {
+  dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(MealsActions.loadMealsData());
+  }, []);
+
   const renderGridItem = itemData => {
     return (
       <CategoryGridTile data={itemData.item} navigate={navigation.navigate} />
